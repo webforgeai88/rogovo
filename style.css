@@ -252,24 +252,16 @@ figcaption { margin-top: .45rem; }
 
 .product-header { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: end; gap: .65rem var(--gap); margin-bottom: 1.35rem; }
 .product-header > p { max-width: 54ch; }
-.food-stories { display: grid; gap: clamp(1.4rem, 3vw, 2.8rem); }
+.food-stories { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.4vw, 2rem); }
 .food-story {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-  align-items: center;
-  gap: var(--gap);
-  padding-top: clamp(1rem, 2vw, 1.8rem);
-  border-top: 1px solid var(--rule);
+  grid-template-rows: auto 1fr;
+  gap: .75rem;
 }
 .food-story figure { min-width: 0; }
 .food-story .article-copy { max-width: 50ch; }
 .food-story h3 { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.food-notes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-@media (min-width: 761px) {
-  .food-story:nth-child(odd) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); }
-  .food-story:nth-child(odd) figure { grid-area: 1 / 2; }
-  .food-story:nth-child(odd) .article-copy { grid-area: 1 / 1; }
-}
+.food-notes { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: clamp(1.25rem, 2.5vw, 2rem); padding-top: 1rem; }
 
 @media (max-width: 960px) {
   .editorial-timeline ol { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -308,7 +300,8 @@ address { font-style: normal; }
   .land-photo img { aspect-ratio: 1.65; }
   .herd-wide { grid-area: auto; }
   .footer-main { flex-direction: column; align-items: start; }
-  .editorial-stories, .editorial-facts, .food-story, .food-notes { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .editorial-stories, .editorial-facts, .food-notes { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .food-stories { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
   .editorial-timeline ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 440px) {
@@ -316,8 +309,38 @@ address { font-style: normal; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .revealed { animation: appear .45s ease-out both; }
-  @keyframes appear { from { opacity: .78; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .hero-content h1, .hero-slogan, .hero-content > p:not(.hero-place, .hero-slogan) {
+    animation: hero-arrival .55s ease-out var(--arrival-delay, 0ms) both;
+  }
+  .hero-slogan { --arrival-delay: 80ms; }
+  .hero-content > p:not(.hero-place, .hero-slogan) { --arrival-delay: 160ms; }
+  .revealed:not(.editorial-timeline li) { animation: editorial-reveal .42s ease-out both; }
+  .editorial-timeline .revealed time { animation: editorial-reveal .36s ease-out var(--date-delay, 0ms) both; }
+  @keyframes hero-arrival { from { opacity: .4; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
+  @keyframes editorial-reveal { from { opacity: .6; translate: 0 14px; } to { opacity: 1; translate: 0 0; } }
+}
+
+@media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+  .editorial-timeline li:nth-child(2) { --date-delay: 55ms; }
+  .editorial-timeline li:nth-child(3) { --date-delay: 110ms; }
+  .editorial-timeline li:nth-child(4) { --date-delay: 165ms; }
+  .editorial-timeline li:nth-child(5) { --date-delay: 220ms; }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hero-frame img, .story figure img { clip-path: inset(0); transition: scale .45s ease, clip-path .45s ease; }
+  .hero-frame:hover img, .story figure:hover img {
+    scale: 1.025;
+    /* Inset offsets the scale so the photo stays inside its original frame. */
+    clip-path: inset(1.22%);
+  }
+  .food-story { transition: translate .25s ease; }
+  .food-story:hover { translate: 0 -3px; }
+  :is(.masthead nav, main, footer) a { transition: color .22s ease, text-decoration-color .22s ease, border-color .22s ease; }
+  :is(.masthead nav, main, footer) a:hover {
+    color: color-mix(in srgb, currentColor 85%, var(--sand));
+    text-decoration-color: var(--sand);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

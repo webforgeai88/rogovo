@@ -84,7 +84,17 @@ if ('IntersectionObserver' in window && matchMedia('(prefers-reduced-motion: no-
       entry.target.classList.add('revealed');
       observer.unobserve(entry.target);
     }
-  }, { threshold: 0.12 });
+  }, { threshold: 0.08 });
 
-  document.querySelectorAll('[data-reveal]').forEach((section) => observer.observe(section));
+  document.querySelectorAll([
+    '[data-reveal] > :is(h2, h3, p, div)',
+    '.story figure:not(.herd-film)',
+    '.editorial-timeline h3',
+    '.editorial-timeline li',
+    '.editorial-facts li',
+    '.editorial-stories .article-copy',
+    '.food-story .article-copy',
+    '.food-notes p',
+    '.footer-main > div',
+  ].join(',')).forEach((element) => observer.observe(element));
 }
