@@ -35,23 +35,23 @@
 }
 
 :root[data-theme="quiet"] {
-  --paper: #eae5dc;
+  --paper: #f3eee5;
   --ink: #292824;
   --stone: #817c70;
   --sand: #b5a18a;
-  --alternate: #ded7cc;
-  --accent-section: #292824;
+  --alternate: #ded3c4;
+  --accent-section: #382d27;
   --on-dark: #f7f2e9;
-  --header-bg: var(--light);
+  --header-bg: #d6c8b7;
   --header-ink: var(--ink);
   --logo-filter: none;
   --history-bg: var(--accent-section);
   --history-ink: var(--on-dark);
   --herd-bg: var(--alternate);
   --production-bg: var(--light);
-  --products-bg: var(--paper);
-  --products-ink: var(--ink);
-  --contacts-bg: var(--alternate);
+  --products-bg: #45372f;
+  --products-ink: var(--on-dark);
+  --contacts-bg: #e5d9ca;
 }
 
 :root[data-theme="perfume"] {
@@ -62,10 +62,14 @@
   --alternate: #e4ddd2;
   --accent-section: #191a19;
   --on-dark: #f7f2eb;
-  --history-bg: var(--light);
-  --herd-bg: var(--alternate);
+  --history-bg: var(--alternate);
+  --herd-bg: #2b2a28;
+  --herd-ink: var(--on-dark);
   --production-bg: var(--light);
-  --contacts-bg: var(--paper);
+  --products-bg: var(--alternate);
+  --products-ink: var(--ink);
+  --contacts-bg: var(--accent-section);
+  --contacts-ink: var(--on-dark);
 }
 
 :root[data-theme="nature"] {
@@ -166,10 +170,13 @@ figcaption { margin-top: .45rem; }
 .theme-options button[aria-pressed="true"] { font-weight: 700; }
 .theme-options button:focus-visible { outline-offset: -2px; }
 .theme-swatch { display: inline-block; flex: 0 0 2rem; height: 1.35rem; border: 1px solid var(--rule); border-radius: .22rem; background: linear-gradient(180deg, var(--swatch-dark) 33%, var(--swatch-light) 33% 67%, var(--swatch-accent) 67%); }
-[data-palette="quiet"] { --swatch-dark: #292824; --swatch-light: #eae5dc; --swatch-accent: #b5a18a; }
+[data-palette="quiet"] { --swatch-dark: #382d27; --swatch-light: #f3eee5; --swatch-accent: #b5a18a; }
 [data-palette="perfume"] { --swatch-dark: #191a19; --swatch-light: #f3f0e9; --swatch-accent: #a38b72; }
 [data-palette="nature"] { --swatch-dark: #30382f; --swatch-light: #ede9de; --swatch-accent: #a89a79; }
 [data-palette="warm"] { --swatch-dark: #45342d; --swatch-light: #f0e5d8; --swatch-accent: #b87355; }
+
+:root[data-theme="quiet"] :is(.menu, .theme-picker summary, .theme-options) { border-color: #766451; }
+:root[data-theme="perfume"] .menu { border-color: var(--sand); }
 
 .hero { display: grid; isolation: isolate; margin-block: clamp(1.2rem, 3vw, 2.5rem) var(--section-pad); }
 .hero-scene { grid-area: 1 / 1; display: grid; grid-template-rows: 1fr auto; min-width: 0; }
