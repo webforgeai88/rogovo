@@ -192,13 +192,15 @@ figcaption { margin-top: .45rem; }
   grid-area: 1 / 1;
   z-index: 1;
   align-self: center;
-  width: min(40%, 27rem);
+  width: min(46%, 27rem);
+  container-type: inline-size;
   margin: 1.4rem 0 3.1rem clamp(1.4rem, 4vw, 3.6rem);
   color: var(--light);
 }
 .hero-place { font-size: .9rem; margin-bottom: .65rem; }
-.hero h1 { font-size: clamp(3.25rem, 6.5vw, 6.3rem); line-height: .95; letter-spacing: .035em; }
-.hero-slogan { margin: .5rem 0 .7rem; font: italic 400 clamp(1.35rem, 2.5vw, 2.4rem)/1.15 var(--serif); }
+.hero h1 { font-size: min(clamp(3.25rem, 6.5vw, 6.3rem), 23cqi); line-height: .95; letter-spacing: .035em; }
+.hero-slogan { margin: .5rem 0 .7rem; font: italic 400 clamp(1.35rem, 2.5vw, 2.4rem)/1.15 var(--serif); text-wrap: balance; }
+.hero-content > p:not(.hero-place, .hero-slogan) { max-width: 39ch; text-wrap: pretty; }
 .text-link { display: inline-block; margin-top: .85rem; text-decoration: none; border-bottom: 1px solid var(--sand); }
 .text-link:hover { border-color: currentColor; }
 .hero-scene figcaption { display: flex; gap: .3rem 1rem; justify-content: space-between; flex-wrap: wrap; }
@@ -211,7 +213,10 @@ figcaption { margin-top: .45rem; }
 #products { background: var(--products-bg); color: var(--products-ink); }
 #contacts { background: var(--contacts-bg); color: var(--contacts-ink, var(--ink)); }
 .story-copy { max-width: 57ch; }
-.story-copy h2 { margin-bottom: clamp(.8rem, 1.55vw, 1.4rem); }
+.story-copy h2 { margin-bottom: clamp(1rem, 1.55vw, 1.4rem); }
+.story h2, .story-copy h3, .editorial-stories h3, .footer-main h2 { text-wrap: balance; }
+.story-copy p:not(.editorial-label), .article-copy p, .footer-main address p { text-wrap: pretty; }
+#history-title { margin-bottom: clamp(1.1rem, 2vw, 1.65rem); }
 .story-copy p + p { margin-top: .8rem; }
 .editorial-label { margin-bottom: .65rem; font-size: .82rem; letter-spacing: .12em; font-weight: 600; }
 .article-copy { max-width: 64ch; }
@@ -257,8 +262,23 @@ figcaption { margin-top: .45rem; }
 .herd-wide img { aspect-ratio: 1.48; object-fit: cover; object-position: 65% 54%; }
 .herd-film { width: min(100%, 24rem); }
 .herd-film video { aspect-ratio: 16/9; object-fit: cover; background: var(--ink); }
-.production-layout { grid-template-columns: minmax(0, .95fr) minmax(0, 1fr); }
+.production-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.production-layout .story-copy > p:not(.editorial-label) {
+  max-inline-size: min(40ch, clamp(16rem, 32vw, 25rem));
+}
+@media (max-width: 350px) {
+  .production-layout .story-copy > p:not(.editorial-label) { max-inline-size: 18ch; }
+}
 .production-photo img { aspect-ratio: 1.65; object-fit: cover; object-position: center 75%; }
+@media (min-width: 761px) {
+  .editorial-stories { row-gap: .6rem; }
+  .editorial-stories > .article-copy {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 2;
+  }
+  .editorial-stories h3 { margin-bottom: 0; }
+}
 
 .product-header { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: end; gap: .65rem var(--gap); margin-bottom: 1.35rem; }
 .product-header > p { max-width: 54ch; }
@@ -269,6 +289,7 @@ figcaption { margin-top: .45rem; }
   gap: .75rem;
 }
 .food-story figure { min-width: 0; }
+.food-story figure img { aspect-ratio: 16 / 9; object-fit: contain; }
 .food-story .article-copy { max-width: 50ch; }
 .food-story h3 { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .food-notes { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: clamp(1.25rem, 2.5vw, 2rem); padding-top: 1rem; }
@@ -279,6 +300,9 @@ figcaption { margin-top: .45rem; }
 
 footer { padding-top: clamp(2.2rem, 4vw, 3.75rem); border-top: 1px solid var(--rule); }
 .footer-main { display: flex; align-items: end; justify-content: space-between; gap: 1rem 2.5rem; padding-bottom: 1.6rem; }
+.footer-main > div { min-width: 0; }
+.footer-main > div:first-child { max-width: 42rem; }
+.footer-main .article-copy { max-width: 52ch; }
 .footer-main .wordmark { font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.03; }
 .footer-main .label { margin-bottom: .35rem; }
 .footer-main h2 { margin-bottom: .85rem; }
@@ -302,7 +326,8 @@ address { font-style: normal; }
   .hero { gap: 1.2rem; }
   .hero-content, .hero-scene { grid-area: auto; }
   .hero-content { width: auto; margin: 0; color: var(--ink); }
-  .hero h1 { font-size: clamp(2.95rem, 14vw, 5rem); }
+  .hero h1 { font-size: min(clamp(2.95rem, 14vw, 5rem), 23cqi); }
+  :is(#land-title, #products-title) br { display: none; }
   .hero-frame { min-height: 0; aspect-ratio: 1.48; }
   .hero-frame::after { display: none; }
   .story-layout, .land-layout, .herd-layout, .production-layout, .product-header { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
