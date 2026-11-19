@@ -77,17 +77,50 @@ document.addEventListener('keydown', (event) => {
 
 matchMedia('(min-width: 761px)').addEventListener('change', () => setMenu(false));
 
-if ('IntersectionObserver' in window && matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+const motionPreference = matchMedia('(prefers-reduced-motion: no-preference)');
+
+function revealHeading(heading) {
+  if (typeof heading.animate !== 'function') return false;
+  const lineHeight = Number.parseFloat(getComputedStyle(heading).lineHeight);
+  const height = heading.getBoundingClientRect().height;
+  if (!lineHeight || !height) return false;
+
+  // Reveal the rendered lines without inserting spans that could change wrapping.
+  const lines = Math.max(1, Math.round(height / lineHeight));
+  const frames = [{ clipPath: 'inset(-.15em -.2em 100% -.2em)', translate: '0 10px', offset: 0 }];
+  const pause = .04 / lines;
+  for (let line = 1; line <= lines; line++) {
+    const offset = line / lines;
+    const clipPath = `inset(-.15em -.2em ${line === lines ? '-.22em' : `${100 * (1 - offset)}%`} -.2em)`;
+    const frame = { clipPath, translate: `0 ${10 * (1 - offset)}px` };
+    if (line < lines) frames.push({ ...frame, offset: offset - pause });
+    frames.push({ ...frame, offset });
+  }
+  const effect = heading.animate(frames, { duration: 300 + 85 * lines, easing: 'ease-out' });
+  const stop = (event) => { if (!event.matches) effect.cancel(); };
+  motionPreference.addEventListener('change', stop);
+  const cleanup = () => motionPreference.removeEventListener('change', stop);
+  effect.addEventListener('finish', cleanup, { once: true });
+  effect.addEventListener('cancel', cleanup, { once: true });
+  return true;
+}
+
+if ('IntersectionObserver' in window && motionPreference.matches) {
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
-      entry.target.classList.add('revealed');
-      observer.unobserve(entry.target);
+      const element = entry.target;
+      observer.unobserve(element);
+      if (!motionPreference.matches) continue;
+      if (element.matches('h2') && revealHeading(element)) continue;
+      element.classList.add('revealed');
     }
   }, { threshold: 0.08 });
 
   document.querySelectorAll([
-    '[data-reveal] > :is(h2, h3, p, div)',
+    '.story h2',
+    '[data-reveal] > :is(h3, p)',
+    '.product-header .editorial-label',
     '.story figure:not(.herd-film)',
     '.editorial-timeline h3',
     '.editorial-timeline li',
@@ -95,6 +128,8 @@ if ('IntersectionObserver' in window && matchMedia('(prefers-reduced-motion: no-
     '.editorial-stories .article-copy',
     '.food-story .article-copy',
     '.food-notes p',
-    '.footer-main > div',
+    '.footer-main h2',
+    '.footer-main .article-copy',
+    '.footer-main address',
   ].join(',')).forEach((element) => observer.observe(element));
 }

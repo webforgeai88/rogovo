@@ -235,6 +235,9 @@ figcaption { margin-top: .45rem; }
 }
 .story-photo img, .production-photo img { width: 100%; }
 .land-layout { grid-template-columns: minmax(0, 1.3fr) minmax(0, .85fr); }
+@media (min-width: 761px) {
+  #land-title { font-size: clamp(1.7rem, 3.55vw, 3.2rem); }
+}
 .land-photo img { aspect-ratio: 2.1; object-fit: cover; object-position: center 60%; }
 
 .herd-layout {
@@ -309,15 +312,47 @@ address { font-style: normal; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .hero-frame img { animation: field-drift 13s ease-in-out; }
   .hero-content h1, .hero-slogan, .hero-content > p:not(.hero-place, .hero-slogan) {
-    animation: hero-arrival .55s ease-out var(--arrival-delay, 0ms) both;
+    animation: hero-arrival .66s ease-out var(--arrival-delay, 0ms) both;
   }
-  .hero-slogan { --arrival-delay: 80ms; }
-  .hero-content > p:not(.hero-place, .hero-slogan) { --arrival-delay: 160ms; }
-  .revealed:not(.editorial-timeline li) { animation: editorial-reveal .42s ease-out both; }
-  .editorial-timeline .revealed time { animation: editorial-reveal .36s ease-out var(--date-delay, 0ms) both; }
+  .hero-slogan { --arrival-delay: 105ms; }
+  .hero-content > p:not(.hero-place, .hero-slogan) { --arrival-delay: 210ms; }
+  .revealed:not(figure, .editorial-timeline li) { animation: editorial-reveal .46s ease-out; }
+  .story figure.revealed img { animation: photo-reveal .66s cubic-bezier(.2,.65,.3,1) backwards; }
+  .story figure.revealed figcaption { animation: editorial-reveal .44s ease-out 80ms backwards; }
+  .editorial-timeline li { position: relative; }
+  .editorial-timeline li.revealed::before {
+    content: "";
+    position: absolute;
+    inset: -1px 0 auto;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left;
+    animation: timeline-progress .44s ease-out var(--date-delay, 0ms) both;
+  }
+  .editorial-timeline .revealed time { animation: date-highlight .6s ease-out var(--date-delay, 0ms) both; }
+  .theme-picker[open] .theme-options,
+  .menu[aria-expanded="true"] + nav { animation: menu-arrival .18s ease-out; }
+  .theme-picker summary { transition: background-color .2s ease, border-color .2s ease; }
+  .theme-options button { transition: background-color .2s ease; }
+  .theme-picker[open] summary, .theme-picker summary:focus-visible {
+    background-color: color-mix(in srgb, var(--header-bg) 88%, var(--sand));
+  }
+  @keyframes field-drift { 0%, 100% { transform: scale(1); } 56% { transform: scale(1.04); } }
   @keyframes hero-arrival { from { opacity: .4; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
   @keyframes editorial-reveal { from { opacity: .6; translate: 0 14px; } to { opacity: 1; translate: 0 0; } }
+  @keyframes photo-reveal {
+    from { opacity: .45; clip-path: inset(0 0 26%); transform: scale(.985); translate: 0 12px; }
+    to { opacity: 1; clip-path: inset(0); transform: scale(1); translate: 0 0; }
+  }
+  @keyframes timeline-progress { from { opacity: .35; scale: 0 1; } to { opacity: .72; scale: 1 1; } }
+  @keyframes date-highlight {
+    0% { opacity: .62; translate: 0 8px; }
+    48% { opacity: 1; text-shadow: 0 0 11px var(--sand); }
+    100% { opacity: 1; translate: 0 0; text-shadow: none; }
+  }
+  @keyframes menu-arrival { from { opacity: .67; translate: 0 5px; } to { opacity: 1; translate: 0 0; } }
 }
 
 @media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
@@ -327,6 +362,10 @@ address { font-style: normal; }
   .editorial-timeline li:nth-child(5) { --date-delay: 220ms; }
 }
 
+@media (min-width: 961px) and (prefers-reduced-motion: no-preference) {
+  .editorial-timeline li.revealed:not(:last-child)::before { right: -1.2rem; }
+}
+
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .hero-frame img, .story figure img { clip-path: inset(0); transition: scale .45s ease, clip-path .45s ease; }
   .hero-frame:hover img, .story figure:hover img {
@@ -334,8 +373,9 @@ address { font-style: normal; }
     /* Inset offsets the scale so the photo stays inside its original frame. */
     clip-path: inset(1.22%);
   }
-  .food-story { transition: translate .25s ease; }
-  .food-story:hover { translate: 0 -3px; }
+  .food-story { transition: translate .32s ease; }
+  .food-story:hover { translate: 0 -4px; }
+  .theme-picker summary:hover { border-color: var(--header-ink); }
   :is(.masthead nav, main, footer) a { transition: color .22s ease, text-decoration-color .22s ease, border-color .22s ease; }
   :is(.masthead nav, main, footer) a:hover {
     color: color-mix(in srgb, currentColor 85%, var(--sand));
