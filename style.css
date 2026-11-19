@@ -247,8 +247,19 @@ figcaption { margin-top: .45rem; }
 }
 .story-photo img, .production-photo img { width: 100%; }
 .land-layout { grid-template-columns: minmax(0, 1.3fr) minmax(0, .85fr); }
+.land-layout .story-copy {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+.land-layout .story-copy > p {
+  inline-size: 0;
+  min-inline-size: 100%;
+}
 @media (min-width: 761px) {
   #land-title { font-size: clamp(1.7rem, 3.55vw, 3.2rem); }
+}
+@media (max-width: 350px) {
+  #land-title { font-size: min(2.15rem, 9.65vw); }
 }
 .land-photo img { aspect-ratio: 2.1; object-fit: cover; object-position: center 60%; }
 
@@ -263,11 +274,17 @@ figcaption { margin-top: .45rem; }
 .herd-film { width: min(100%, 24rem); }
 .herd-film video { aspect-ratio: 16/9; object-fit: cover; background: var(--ink); }
 .production-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.production-layout .story-copy > p:not(.editorial-label) {
-  max-inline-size: min(40ch, clamp(16rem, 32vw, 25rem));
+.production-layout .story-copy {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+/* Let the heading determine the column width before the description wraps. */
+.production-layout .story-copy > p {
+  inline-size: 0;
+  min-inline-size: 100%;
 }
 @media (max-width: 350px) {
-  .production-layout .story-copy > p:not(.editorial-label) { max-inline-size: 18ch; }
+  #production-title { font-size: min(2.15rem, 9.65vw); }
 }
 .production-photo img { aspect-ratio: 1.65; object-fit: cover; object-position: center 75%; }
 @media (min-width: 761px) {
@@ -327,7 +344,7 @@ address { font-style: normal; }
   .hero-content, .hero-scene { grid-area: auto; }
   .hero-content { width: auto; margin: 0; color: var(--ink); }
   .hero h1 { font-size: min(clamp(2.95rem, 14vw, 5rem), 23cqi); }
-  :is(#land-title, #products-title) br { display: none; }
+  #products-title br { display: none; }
   .hero-frame { min-height: 0; aspect-ratio: 1.48; }
   .hero-frame::after { display: none; }
   .story-layout, .land-layout, .herd-layout, .production-layout, .product-header { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
